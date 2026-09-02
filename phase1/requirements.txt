@@ -1,0 +1,5 @@
+# Phase 1: Reverse Image Search Requirements
+requests>=2.31.0
+serpapi>=1.1.0
+python-dotenv>=1.0.1
+pillow>=10.0.0

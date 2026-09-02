@@ -1,0 +1,21 @@
+# ==============================================================================
+# FaceScan2Chain: Unified Dependencies (Phases 1–5)
+# HH Goa 2026 Shortlisting Challenge — Task 3
+# ==============================================================================
+
+# Phase 1: Reverse Image & Web Search
+google-search-results>=2.4.2
+requests>=2.31.0
+pillow>=10.0.0
+python-dotenv>=1.0.1
+
+# Phase 2: Face Detection & 512-D Encoding
+torch>=2.0.0
+torchvision>=0.15.0
+facenet-pytorch>=2.6.0
+numpy>=1.24.0
+
+# Phase 4 & Phase 5: Blockchain Anchoring & Verification (Web3.py)
+web3>=6.15.0
+eth-account>=0.11.0
+py-solc-x>=2.0.5

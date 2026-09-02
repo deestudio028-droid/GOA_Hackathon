@@ -1,0 +1,2 @@
+# Phase 5: Blockchain Verification & Tamper Detection Requirements
+-r ../phase4/requirements.txt

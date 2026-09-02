@@ -1,0 +1,50 @@
+# ==============================================================================
+# FaceScan2Chain Git Ignore Configuration
+# ==============================================================================
+
+# Environment files & secrets
+.env
+*.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.secret
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Temporary face detection crops
+phase2/output/faces/
+phase3/output/faces/
+
+# Keep output schema/sample files if needed, but ignore runtime temp files
+*.tmp

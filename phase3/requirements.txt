@@ -1,0 +1,3 @@
+# Phase 3: Face-to-Web/Social Search Integration Requirements
+-r ../phase1/requirements.txt
+-r ../phase2/requirements.txt

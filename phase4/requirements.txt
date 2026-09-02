@@ -1,0 +1,4 @@
+# Phase 4: Blockchain Anchoring Requirements
+web3>=6.15.0
+eth-account>=0.11.0
+python-dotenv>=1.0.1

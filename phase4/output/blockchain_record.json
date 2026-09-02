@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "fingerprint_algorithm": "SHA-256",
+  "fingerprint": "1cfb6fbe4dd2ba8de4904729dda64011bafff57683e2c351d2a82f1826ee90a4",
+  "network": "Polygon Amoy",
+  "chain_id": 80002,
+  "transaction_hash": "0xb799eb6e3e63be90c6e2a2a31e3e565d6a5c517745e5919473e09fb44069619b",
+  "block_number": 46513999,
+  "contract_address": "0xeb4FA1693171e3d2E7DF42D861453cf6B47CB71D",
+  "anchored_by": "0xd0a8547503500b8307eb34e4800Ff2e3157F6030",
+  "anchored_at_timestamp": 1788332441,
+  "anchored_at_iso": "2026-09-02T07:00:41+00:00",
+  "gas_used": null,
+  "status": "ANCHORED",
+  "verification": {
+    "on_chain_hash": "1cfb6fbe4dd2ba8de4904729dda64011bafff57683e2c351d2a82f1826ee90a4",
+    "matches_local_hash": true,
+    "verified_at": "2026-09-02T07:05:40.842064+00:00"
+  },
+  "candidate_summary": {
+    "title": "So is emin watching gree and böcü or #Arafta #EmSu",
+    "source": "x.com",
+    "url": "https://x.com/lorrainevc/status/2083252779527852252",
+    "type": "SOCIAL"
+  }
+}
