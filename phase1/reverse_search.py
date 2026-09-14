@@ -279,18 +279,30 @@ class SerpApiGoogleLensEngine:
         if "error" in results_data:
             raise ApiNetworkError(f"SerpApi returned an error: {results_data['error']}")
 
-        # Step 3: Parse visual matches
+        # Step 3: Parse visual and exact matches
+        exact_matches = results_data.get("exact_matches", [])
         visual_matches = results_data.get("visual_matches", [])
-        if not visual_matches and "reverse_image_search" in results_data:
+        if not visual_matches and not exact_matches and "reverse_image_search" in results_data:
             visual_matches = results_data["reverse_image_search"].get("inline_images", [])
 
-        if not visual_matches:
+        # Combine exact matches first, then visual matches (deduping by link)
+        combined_matches = list(exact_matches)
+        seen_links = {m.get("link") or m.get("source_url") for m in exact_matches if (m.get("link") or m.get("source_url"))}
+        for vm in visual_matches:
+            link = vm.get("link") or vm.get("source_url")
+            if link and link in seen_links:
+                continue
+            if link:
+                seen_links.add(link)
+            combined_matches.append(vm)
+
+        if not combined_matches:
             raise NoResultsFoundError(
                 "Genuine search executed successfully, but no visual matches were found for this image in Google Lens."
             )
 
         parsed_results: List[SearchResult] = []
-        for idx, match in enumerate(visual_matches[:max_results]):
+        for idx, match in enumerate(combined_matches[:max_results]):
             title = match.get("title") or match.get("text") or "Untitled Web Match"
             link = match.get("link") or match.get("source_url") or "N/A"
             source = match.get("source") or extract_domain(link)
@@ -583,6 +595,66 @@ def perform_reverse_search(
         print(f"\n[!] Primary engine ({selected_engine.name}) error: {primary_err}")
         print(f"[*] Automatically falling back to backup engine: {backup_engine.name}...")
         return backup_engine.search(image_bytes, max_results=max_results)
+
+
+def search_google_social(
+    query_entity: str,
+    api_key: Optional[str] = None,
+    max_results: int = 5
+) -> List[SearchResult]:
+    """
+    Executes a genuine Google Web search via SerpApi targeting major social media platforms
+    dynamically for a given query entity derived from reverse image search.
+    """
+    api_key = api_key or os.getenv("SERPAPI_API_KEY")
+    if not api_key or not api_key.strip() or api_key == "your_serpapi_api_key_here":
+        return []
+
+    # Target recognized social media platforms dynamically
+    social_query = f'{query_entity} (site:instagram.com OR site:facebook.com OR site:x.com OR site:twitter.com OR site:youtube.com OR site:threads.net OR site:tiktok.com OR site:reddit.com)'
+
+    search_url = "https://serpapi.com/search"
+    search_params = {
+        "engine": "google",
+        "q": social_query,
+        "api_key": api_key,
+        "num": max_results * 2,
+        "no_cache": "false"
+    }
+    headers = {"User-Agent": "ReverseImageSearchPOC/1.0"}
+
+    try:
+        resp = requests.get(search_url, params=search_params, headers=headers, timeout=25)
+        if resp.status_code != 200:
+            return []
+        data = resp.json()
+    except Exception:
+        return []
+
+    organic_results = data.get("organic_results", [])
+    results: List[SearchResult] = []
+
+    for item in organic_results:
+        link = item.get("link")
+        if not link or link == "N/A":
+            continue
+        title = item.get("title") or f"Social Match for {query_entity}"
+        source = extract_domain(link)
+        thumbnail = item.get("thumbnail") or "N/A"
+        snippet = item.get("snippet")
+
+        results.append(
+            SearchResult(
+                title=title,
+                source=source,
+                url=link,
+                image_url=thumbnail,
+                similarity_info=snippet or f"Live Google Social Search: {query_entity}",
+                engine="Google Search (via SerpApi)"
+            )
+        )
+
+    return results
 
 
 # ==============================================================================
