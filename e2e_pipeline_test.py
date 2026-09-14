@@ -60,7 +60,7 @@ INPUT_IMAGES = [
     os.path.join(WORKSPACE_ROOT, "test1.jpeg"),
     os.path.join(WORKSPACE_ROOT, "test2.jpeg"),
     os.path.join(WORKSPACE_ROOT, "test3.jpeg"),
-    os.path.join(WORKSPACE_ROOT, "test4.jpg"),
+    
 ]
 
 MAX_SEARCH_RESULTS = 5
